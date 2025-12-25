@@ -1,0 +1,43 @@
+package org.firstinspires.ftc.teamcode.robot;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
+
+@TeleOp(name = "Pushbot Arcade", group = "TeleOp")
+public class PushbotArcadeTeleOp extends LinearOpMode {
+
+    private RobotHardware robot = new RobotHardware();
+
+    @Override
+    public void runOpMode() {
+
+        robot.init(hardwareMap);
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            // Arcade inputs
+            double drive = -gamepad1.left_stick_y;   // forward/back (positive = forward)
+            double turn  = gamepad1.right_stick_x;   // turn (positive = turn right)
+
+            // Combine for left & right powers
+            double leftPower  = Range.clip(drive + turn, -1.0, 1.0);
+            double rightPower = Range.clip(drive - turn, -1.0, 1.0);
+
+            // Optional speed modifier: half speed when right bumper held
+            double speedMod = gamepad1.right_bumper ? 0.5 : 1.0;
+
+            robot.leftFront.setPower(leftPower * speedMod);
+            robot.leftRear.setPower(leftPower * speedMod);
+            robot.rightFront.setPower(rightPower * speedMod);
+            robot.rightRear.setPower(rightPower * speedMod);
+
+            telemetry.addData("Left",  leftPower);
+            telemetry.addData("Right", rightPower);
+            telemetry.update();
+        }
+    }
+}
