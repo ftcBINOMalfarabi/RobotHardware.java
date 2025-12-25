@@ -1,0 +1,41 @@
+package org.firstinspires.ftc.teamcode.robot;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+public class RobotHardware {
+    public DcMotor leftFront = null;
+    public DcMotor leftRear = null;
+    public DcMotor rightFront = null;
+    public DcMotor rightRear = null;
+
+    private HardwareMap hwMap = null;
+
+    public void init(HardwareMap ahwMap) {
+        hwMap = ahwMap;
+
+        leftFront  = hwMap.get(DcMotor.class, "left_front");
+        leftRear   = hwMap.get(DcMotor.class, "left_rear");
+        rightFront = hwMap.get(DcMotor.class, "right_front");
+        rightRear  = hwMap.get(DcMotor.class, "right_rear");
+
+        // Ensure forward is the same physically for both sides
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        // Open loop (no encoder closed-loop)
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // Behavior when power = 0
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+}
